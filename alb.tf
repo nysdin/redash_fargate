@@ -26,6 +26,11 @@ resource "aws_alb_listener" "redash_main" {
     forward {
       target_group {
         arn = aws_alb_target_group.redash_blue_target_group.arn
+        weight = 0
+      }
+      target_group {
+        arn = aws_alb_target_group.redash_green_target_group.arn
+        weight = 100
       }
     }
   }
