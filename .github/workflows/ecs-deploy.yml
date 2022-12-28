@@ -31,7 +31,7 @@ jobs:
         id: render-redash-task-definition
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: ./github/task_definitions/redash.json
+          task-definition: .github/task_definitions/redash.json
           container-name: server
           image: redash/redash:10.0.0.b50363
       - name: Deploy to Amazon ECS service
