@@ -41,6 +41,6 @@ jobs:
           service: ${{ env.SERVICE_NAME }}
           cluster: ${{ env.CLUSTER_NAME }}
           wait-for-service-stability: true
-          codedeploy-appspec: appspec.json
+          codedeploy-appspec: appspec.yml
           codedeploy-application: ${{ env.CODEDEPLOY_APPLICATION }}
           codedeploy-deployment-group: ${{ env.CODEDEPLOY_DEPLOYMENT_GROUP }}
