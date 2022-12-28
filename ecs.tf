@@ -66,7 +66,8 @@ resource "aws_ecs_service" "redash" {
   lifecycle {
     ignore_changes = [
       desired_count,
-      # task_definition, <= blue green deploymentの時は外す。
+      task_definition,
+      load_balancer
     ]
   }
 }
@@ -86,14 +87,14 @@ resource "aws_ecs_service" "redash_scheduler" {
     security_groups  = [aws_security_group.redash.id]
     assign_public_ip = true
   }
-  platform_version = "1.4.0"
+  platform_version = "LATEST"
   propagate_tags   = "SERVICE"
   task_definition  = aws_ecs_task_definition.redash_scheduler.arn
 
   lifecycle {
     ignore_changes = [
       desired_count,
-      # task_definition,
+      task_definition
     ]
   }
 }

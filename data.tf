@@ -45,13 +45,13 @@ data "aws_iam_policy_document" "gihub_actions_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
-      type = "Federated"
+      type        = "Federated"
       identifiers = ["arn:aws:iam::292687378741:oidc-provider/token.actions.githubusercontent.com"]
     }
     condition {
-      test = "StringLike"
+      test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values = ["repo:nysdin/redash_fargate:*"]
+      values   = ["repo:nysdin/redash_fargate:*"]
     }
   }
 }
@@ -103,10 +103,10 @@ data "aws_iam_policy_document" "redash_fargate_pipeline" {
   }
 
   statement {
-    actions = ["iam:PassRole"]
+    actions   = ["iam:PassRole"]
     resources = ["*"]
     condition {
-      test = "StringEqualsIfExists"
+      test     = "StringEqualsIfExists"
       variable = "iam:PassedToService"
 
       values = ["ecs-tasks.amazonaws.com"]
@@ -143,7 +143,7 @@ data "aws_iam_policy_document" "gh_ecs_deploy_policy" {
   }
 
   statement {
-    sid = "PassRolesInTaskDefinition"
+    sid     = "PassRolesInTaskDefinition"
     actions = ["iam:PassRole"]
     resources = [
       aws_iam_role.redash_ecs_task_role.arn,

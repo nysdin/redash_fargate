@@ -43,7 +43,7 @@ resource "aws_db_instance" "postgres" {
 resource "aws_db_subnet_group" "postgres" {
   name = "redash-postgresql-subnet-group"
   subnet_ids = [
-      aws_subnet.private_1a.id,
+    aws_subnet.private_1a.id,
     aws_subnet.private_1c.id,
   ]
 }
