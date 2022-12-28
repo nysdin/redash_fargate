@@ -1,0 +1,10 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: "" # Specify th ARN of task definition
+        LoadBalancerInfo:
+          ContainerName: "server"
+          ContainerPort: "5000"
+        PlatformVersion: "LATEST"

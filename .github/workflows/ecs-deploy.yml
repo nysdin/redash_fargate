@@ -4,6 +4,17 @@ on:
   push:
     - main
 
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-1
+  CLUSTER_NAME: redash-cluster
+  SERVICE_NAME: redash
+  CODEDEPLOY_APPLICATION: redash_fargate_bg_deployment
+  CODEDEPLOY_DEPLOYMENT_GROUP: redash_deployment_group
+
 jobs:
   ecs-deploy:
     runs-on: ubuntu-latest
@@ -11,5 +22,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Configure AWS Credentials
-        with: aws-retion: ap-northeast-1
-        6938fd4d98bab03faadb97b34396831e3780aea1 DigiCert
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Render Amazon ECS task definition
+        id: render-redash-task-definition
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ./github/task_definitions/redash.json
+          container-name: server
+          image: redash/redash:10.0.0.b50363
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-redash-task-definition.outputs.task-definition }}
+          service: ${{ env.SERVICE_NAME }}
+          cluster: ${{ env.CLUSTER_NAME }}
+          wait-for-service-stability: true
+          codedeploy-appspec: appspec.json
+          codedeploy-application: ${{ env.CODEDEPLOY_APPLICATION }}
+          codedeploy-deployment-group: ${{ env.CODEDEPLOY_DEPLOYMENT_GROUP }}

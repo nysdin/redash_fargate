@@ -86,7 +86,7 @@ resource "aws_ecs_service" "redash_scheduler" {
     security_groups  = [aws_security_group.redash.id]
     assign_public_ip = true
   }
-  platform_version = "LATEST"
+  platform_version = "1.4.0"
   propagate_tags   = "SERVICE"
   task_definition  = aws_ecs_task_definition.redash_scheduler.arn
 

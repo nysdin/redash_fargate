@@ -43,14 +43,15 @@ data "aws_iam_policy_document" "codepipeline_assume_role_policy" {
 
 data "aws_iam_policy_document" "gihub_actions_assume_role_policy" {
   statement {
-    actions = "sts:AssumeRoleWithWebIdentity"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
-
+      type = "Federated"
+      identifiers = ["arn:aws:iam::292687378741:oidc-provider/token.actions.githubusercontent.com"]
     }
     condition {
       test = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values = ["repo:nysdin/redash_farget:*"]
+      values = ["repo:nysdin/redash_fargate:*"]
     }
   }
 }
@@ -128,6 +129,39 @@ data "aws_iam_policy_document" "redash_fargate_pipeline" {
       "codebuild:BatchGetBuildBatches",
       "codebuild:StartBuildBatch"
     ]
+    resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "gh_ecs_deploy_policy" {
+  statement {
+    sid = "RegisterTaskDefinition"
+    actions = [
+      "ecs:RegisterTaskDefinition"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "PassRolesInTaskDefinition"
+    actions = ["iam:PassRole"]
+    resources = [
+      aws_iam_role.redash_ecs_task_role.arn,
+      aws_iam_role.redash_ecs_task_execution_role.arn
+    ]
+  }
+
+  statement {
+    sid = "DeployService"
+    actions = [
+      "ecs:DescribeServices",
+      "codedeploy:GetDeploymentGroup",
+      "codedeploy:CreateDeployment",
+      "codedeploy:GetDeployment",
+      "codedeploy:GetDeploymentConfig",
+      "codedeploy:RegisterApplicationRevision"
+    ]
+    # resources = [aws_ecs_service.redash.id] <= CodeDeployもtf管理したらdeploymentgroupなどのリソースを指定する
     resources = ["*"]
   }
 }
