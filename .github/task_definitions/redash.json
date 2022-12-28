@@ -1,140 +1,151 @@
-[
-  {
-    "name": "server",
-    "image": "redash/redash:10.0.0.b50363",
-    "cpu": 256,
-    "memoryReservation": 512,
-    "essential": true,
-    "command": ["server"],
-    "portMappings": [
-      {
-        "containerPort": 5000,
-        "hostPort": 5000
-      }
-    ],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "/ecs/fargate/redash",
-        "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "ecs"
-      }
+{
+  "containerDefinitions": [
+    {
+      "name": "server",
+      "image": "redash/redash:10.0.0.b50363",
+      "cpu": 256,
+      "memoryReservation": 512,
+      "essential": true,
+      "command": ["server"],
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 5000
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fargate/redash",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "secrets": [
+        {
+          "name": "REDASH_DATABASE_URL",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/database/postgresql/url"
+        },
+        {
+          "name": "REDASH_REDIS_URL",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/redis/url"
+        }
+      ],
+      "environment": [
+        {
+          "name": "PYTHONUNBUFFERED",
+          "value": "1"
+        },
+        {
+          "name": "REDASH_ALLOW_SCRIPTS_IN_USER_INPUT",
+          "value": "true"
+        },
+        {
+          "name": "REDASH_LOG_LEVEL",
+          "value": "INFO"
+        },
+        {
+          "name": "REDASH_LOG_STDOUT",
+          "value": "true"
+        },
+        {
+          "name": "REDASH_DATE_FORMAT",
+          "value": "YY/DD/MM"
+        },
+        {
+          "name": "REDASH_PASSWORD_LOGIN_ENABLED",
+          "value": "true"
+        }
+      ]
     },
-    "secrets": [
-      {
-        "name": "REDASH_DATABASE_URL",
-        "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/database/postgresql/url"
+    {
+      "name": "worker",
+      "image": "redash/redash:10.0.0.b50363",
+      "cpu": 512,
+      "memoryReservation": 1024,
+      "essential": true,
+      "command": ["worker"],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fargate/redash",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
       },
-      {
-        "name": "REDASH_REDIS_URL",
-        "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/redis/url"
-      }
-    ],
-    "environment": [
-      {
-        "name": "PYTHONUNBUFFERED",
-        "value": "1"
-      },
-      {
-        "name": "REDASH_ALLOW_SCRIPTS_IN_USER_INPUT",
-        "value": "true"
-      },
-      {
-        "name": "REDASH_LOG_LEVEL",
-        "value": "INFO"
-      },
-      {
-        "name": "REDASH_LOG_STDOUT",
-        "value": "true"
-      },
-      {
-        "name": "REDASH_DATE_FORMAT",
-        "value": "YY/DD/MM"
-      },
-      {
-        "name": "REDASH_PASSWORD_LOGIN_ENABLED",
-        "value": "true"
-      }
-    ]
-  },
-  {
-    "name": "worker",
-    "image": "redash/redash:10.0.0.b50363",
-    "cpu": 512,
-    "memoryReservation": 1024,
-    "essential": true,
-    "command": ["worker"],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "/ecs/fargate/redash",
-        "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "ecs"
-      }
+      "secrets": [
+        {
+          "name": "REDASH_DATABASE_URL",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/database/postgresql/url"
+        },
+        {
+          "name": "REDASH_REDIS_URL",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/redis/url"
+        }
+      ],
+      "environment": [
+        {
+          "name": "PYTHONUNBUFFERED",
+          "value": "1"
+        },
+        {
+          "name": "REDASH_ALLOW_SCRIPTS_IN_USER_INPUT",
+          "value": "true"
+        },
+        {
+          "name": "REDASH_LOG_LEVEL",
+          "value": "INFO"
+        },
+        {
+          "name": "REDASH_LOG_STDOUT",
+          "value": "true"
+        },
+        {
+          "name": "REDASH_DATE_FORMAT",
+          "value": "YY/DD/MM"
+        },
+        {
+          "name": "REDASH_PASSWORD_LOGIN_ENABLED",
+          "value": "true"
+        }
+      ]
     },
-    "secrets": [
-      {
-        "name": "REDASH_DATABASE_URL",
-        "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/database/postgresql/url"
+    {
+      "name": "mackerel-container-agent",
+      "image": "mackerel/mackerel-container-agent:latest",
+      "cpu": 256,
+      "memoryReservation": 256,
+      "essential": true,
+      "command": ["worker"],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/fargate/redash",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "ecs"
+        }
       },
-      {
-        "name": "REDASH_REDIS_URL",
-        "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/redash/redis/url"
-      }
-    ],
-    "environment": [
-      {
-        "name": "PYTHONUNBUFFERED",
-        "value": "1"
-      },
-      {
-        "name": "REDASH_ALLOW_SCRIPTS_IN_USER_INPUT",
-        "value": "true"
-      },
-      {
-        "name": "REDASH_LOG_LEVEL",
-        "value": "INFO"
-      },
-      {
-        "name": "REDASH_LOG_STDOUT",
-        "value": "true"
-      },
-      {
-        "name": "REDASH_DATE_FORMAT",
-        "value": "YY/DD/MM"
-      },
-      {
-        "name": "REDASH_PASSWORD_LOGIN_ENABLED",
-        "value": "true"
-      }
-    ]
-  },
-  {
-    "name": "mackerel-container-agent",
-    "image": "mackerel/mackerel-container-agent:latest",
-    "cpu": 256,
-    "memoryReservation": 256,
-    "essential": true,
-    "command": ["worker"],
-    "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "/ecs/fargate/redash",
-        "awslogs-region": "ap-northeast-1",
-        "awslogs-stream-prefix": "ecs"
-      }
-    },
-    "secrets": [
-      {
-        "name": "MACKEREL_APIKEY",
-        "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/mackerel/apikey"
-      }
-    ],
-    "environment": [
-      {
-        "name": "MACKEREL_CONTAINER_PLATFORM",
-        "value": "ecs"
-      }
-    ]
-  }
-]
+      "secrets": [
+        {
+          "name": "MACKEREL_APIKEY",
+          "valueFrom": "arn:aws:ssm:ap-northeast-1:292687378741:parameter/mackerel/apikey"
+        }
+      ],
+      "environment": [
+        {
+          "name": "MACKEREL_CONTAINER_PLATFORM",
+          "value": "ecs"
+        }
+      ]
+    }
+  ],
+  "family": "redash",
+  "placementConstraints": [],
+  "cpu": "1024",
+  "memory": "2048",
+  "taskRoleArn": "arn:aws:iam::292687378741:role/redashEcsTaskRole",
+  "executionRoleArn": "arn:aws:iam::292687378741:role/redashEcsTaskExecutionRole",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "volumes": []
+}
