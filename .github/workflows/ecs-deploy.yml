@@ -2,7 +2,8 @@ name: Deploy To ECS
 on:
   workflow_dispatch:
   push:
-    - main
+    branches:
+      - main
 
 permissions:
   id-token: write
