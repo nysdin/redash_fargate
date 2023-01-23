@@ -8,7 +8,7 @@ on:
 env:
   date: $(date "+%Y%m%d")
   hoge: hoge
-  hogefoo: "${{ env.hoge }}-foo"
+  # hogefoo: "${{ env.hoge }}-foo"
 
 jobs:
   test:
@@ -18,5 +18,4 @@ jobs:
         uses: actions/checkout@v3
       - name: echo
         run: |
-          echo ${{ env.hogefoo }}
           echo ${{ env.date }}
