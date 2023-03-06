@@ -1,0 +1,20 @@
+name: Branch
+on:
+  workflow_dispatch:
+    branches:
+      - main
+
+env:
+  date: $(date "+%Y%m%d")
+  hoge: hoge
+  # hogefoo: "${{ env.hoge }}-foo"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: echo
+        run: |
+          echo ${{ env.date }}
