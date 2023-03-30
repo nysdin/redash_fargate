@@ -1,20 +1,17 @@
 name: Test
 on:
   workflow_dispatch:
+  push:
     branches:
       - main
-
-env:
-  date: $(date "+%Y%m%d")
-  hoge: hoge
-  # hogefoo: "${{ env.hoge }}-foo"
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        index: [0, 1, 2]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
       - name: echo
         run: |
-          echo ${{ env.date }}
+          echo ${{ matrix.index }}
