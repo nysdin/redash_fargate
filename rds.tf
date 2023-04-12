@@ -99,3 +99,120 @@ resource "aws_db_subnet_group" "redash_datasource" {
     aws_subnet.private_1c.id,
   ]
 }
+
+# resource "aws_rds_cluster" "bg_test" {
+#   cluster_identifier              = "test"
+#   engine                          = "aurora-mysql"
+#   engine_version                  = "8.0.mysql_aurora.3.02.0"
+#   backup_retention_period         = 1
+#   master_username                 = "root"
+#   master_password                 = "password"
+#   skip_final_snapshot             = true
+#   preferred_maintenance_window    = "Wed:05:00-Wed:05:30"
+#   preferred_backup_window         = "02:00-02:30"
+#   vpc_security_group_ids          = ["sg-0dc3ba2874ea7fbc6"]
+#   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.test.name
+#   db_subnet_group_name            = "redash_datasource"
+#   port                            = 3306
+# }
+
+
+# resource "aws_rds_cluster_instance" "bg_test" {
+#   count = 2
+#   cluster_identifier      = aws_rds_cluster.bg_test.id
+#   db_subnet_group_name    = "redash_datasource"
+#   db_parameter_group_name = aws_db_parameter_group.test.name
+#   identifier              = "bg-test-${count.index}"
+#   instance_class          = "db.t3.medium"
+#   preferred_maintenance_window = "Wed:16:00-Wed:16:30"
+#   monitoring_interval          = 0
+#   engine                          = "aurora-mysql"
+#   engine_version                  = "8.0.mysql_aurora.3.02.0"
+#   performance_insights_enabled = false
+#   publicly_accessible          = false
+# }
+
+# resource "aws_rds_cluster" "test1" {
+#   cluster_identifier              = "test12344"
+#   engine                          = "aurora-mysql"
+#   engine_version                  = "8.0.mysql_aurora.3.01.0"
+#   backup_retention_period         = 1
+#   master_username                 = "root"
+#   master_password                 = "password"
+#   skip_final_snapshot             = true
+#   preferred_maintenance_window    = "Wed:05:00-Wed:05:30"
+#   preferred_backup_window         = "02:00-02:30"
+#   vpc_security_group_ids          = ["sg-0dc3ba2874ea7fbc6"]
+#   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.test.name
+#   db_subnet_group_name            = "redash_datasource"
+#   port                            = 3306
+# }
+
+
+# resource "aws_rds_cluster_instance" "test" {
+#   count = 2
+#   cluster_identifier      = aws_rds_cluster.test1.id
+#   db_subnet_group_name    = "redash_datasource"
+#   db_parameter_group_name = aws_db_parameter_group.test.name
+#   identifier              = "test-${count.index}"
+#   instance_class          = "db.t3.medium"
+#   preferred_maintenance_window = "Wed:16:00-Wed:16:30"
+#   monitoring_interval          = 0
+#   engine                          = "aurora-mysql"
+#   engine_version                  = "8.0.mysql_aurora.3.01.0"
+#   performance_insights_enabled = false
+#   publicly_accessible          = false
+# }
+
+#######################################
+#
+# Parameter Group
+#
+#######################################
+
+
+resource "aws_rds_cluster_parameter_group" "bg_test" {
+  name   = "bg-test-mysql57-cluster-parameter-group"
+  family = "aurora-mysql5.7"
+  parameter {
+    name  = "sql_mode"
+    value = "NO_ENGINE_SUBSTITUTION"
+  }
+  parameter {
+    apply_method = "pending-reboot"
+    name         = "binlog_format"
+    value        = "ROW"
+  }
+}
+
+resource "aws_db_parameter_group" "bg_test" {
+  name   = "bg-test-mysql57-db-parameter-group"
+  family = "aurora-mysql5.7"
+  parameter {
+    name  = "sql_mode"
+    value = "NO_ENGINE_SUBSTITUTION"
+  }
+}
+
+resource "aws_rds_cluster_parameter_group" "test" {
+  name   = "bg-test-mysql80-cluster-parameter-group"
+  family = "aurora-mysql8.0"
+  parameter {
+    name  = "sql_mode"
+    value = "NO_ENGINE_SUBSTITUTION"
+  }
+  parameter {
+    apply_method = "pending-reboot"
+    name         = "binlog_format"
+    value        = "ROW"
+  }
+}
+
+resource "aws_db_parameter_group" "test" {
+  name   = "bg-test-mysql80-db-parameter-group"
+  family = "aurora-mysql8.0"
+  parameter {
+    name  = "sql_mode"
+    value = "NO_ENGINE_SUBSTITUTION"
+  }
+}

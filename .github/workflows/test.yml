@@ -12,3 +12,5 @@ jobs:
       - run: which tty
       - run: ps aux
       - run: tty
+      - run: |
+          echo ${GITHUB_REF}
