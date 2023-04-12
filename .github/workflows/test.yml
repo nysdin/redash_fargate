@@ -12,4 +12,5 @@ jobs:
       - run: which tty
       - run: ps aux
       - run: |
-          echo ${GITHUB_REF}
+          branch=${{ github.ref_name }}
+          echo "branch=${branch//\//-}"
