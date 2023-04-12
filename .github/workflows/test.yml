@@ -8,10 +8,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        index: [0, 1, 2]
     steps:
-      - name: echo
-        run: |
-          echo ${{ matrix.index }}
+      - run: tty
+      - run: ps aux
