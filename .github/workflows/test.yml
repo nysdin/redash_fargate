@@ -9,5 +9,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: tty
+      - run: which tty
       - run: ps aux
+      - run: tty
