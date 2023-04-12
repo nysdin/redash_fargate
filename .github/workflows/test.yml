@@ -11,6 +11,10 @@ jobs:
     steps:
       - run: which tty
       - run: ps aux
-      - run: |
+      - name: set envrionment
+        id: set-env
+        run: |
           branch=${{ github.ref_name }}
-          echo "branch=${branch//\//-}"
+          echo "branch=${branch//\//-}" >> ${GITHUB_OUTPUT}
+      - run: |
+          echo ${{ steps.set-env.outputs.branch }}
