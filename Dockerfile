@@ -1,3 +1,4 @@
+# syntax = docker/dockerfile:1.0.0-experimental
 FROM redash/redash:10.0.0.b50363
 
 USER root
