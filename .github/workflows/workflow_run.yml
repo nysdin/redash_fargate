@@ -9,3 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ok
+      - run: echo ${{ github.event.workflow_run.conclusion }}
