@@ -2,12 +2,17 @@ name: Test
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+
+env:
+  date: $(date "+%Y%m%d")
+  hoge: hoge
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://syuktasu-kaigi.jp
     steps:
       - run: which tty
       - run: ps aux
