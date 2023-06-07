@@ -10,12 +10,9 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://syuktasu-kaigi.jp
     steps:
-      - run: which tty
-      - run: ps aux
-      - run: |
-          branch=${{ github.ref_name }}
-          echo "branch=${branch//\//-}"
+      - run: pwd
+      - run: whoami
+      - run: echo $GITHUB_WORKSPACE
+      - uses: actions/checkout@v3
+      - run: pwd
