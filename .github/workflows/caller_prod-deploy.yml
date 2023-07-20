@@ -1,0 +1,9 @@
+name: Production Deploy
+on:
+  push:
+
+jobs:
+  prod-deploy:
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: production
