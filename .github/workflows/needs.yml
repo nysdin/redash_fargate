@@ -1,0 +1,20 @@
+name: workflow needs test
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  job1:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo job1
+  job2:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo job2
+  job3:
+    needs: [job1, job2]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo job3
