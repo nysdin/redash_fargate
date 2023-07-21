@@ -3,6 +3,10 @@ on:
   push:
   workflow_dispatch:
 jobs:
+  job0:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo job0
   job1:
     if: false
     runs-on: ubuntu-latest
@@ -14,7 +18,7 @@ jobs:
     steps:
       - run: echo job2
   job3:
-    needs: [job1, job2]
+    needs: [job0, job1, job2]
     runs-on: ubuntu-latest
     steps:
       - run: echo job3
