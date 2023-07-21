@@ -1,6 +1,7 @@
 name: Staging Deploy
 on:
   push:
+  # workflow_dispatch:
 
 jobs:
   prod-deploy:

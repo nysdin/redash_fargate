@@ -5,7 +5,7 @@ jobs:
   failure:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 1
+      - run: exit 1
       - name: failure1
         if: ${{ failure() }}
         run: echo failure1

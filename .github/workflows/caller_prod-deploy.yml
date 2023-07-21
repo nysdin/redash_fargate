@@ -1,6 +1,7 @@
 name: Production Deploy
 on:
-  push:
+  # push:
+  workflow_dispatch:
 
 jobs:
   prod-deploy:
