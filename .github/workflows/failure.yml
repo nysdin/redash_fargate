@@ -1,15 +1,17 @@
-name: Deploy
+name: Failure test
 on:
   push:
+  workflow_dispatch:
 jobs:
   failure:
     runs-on: ubuntu-latest
     steps:
       - run: exit 1
+        id: step1
       - name: failure1
         if: ${{ failure() }}
         run: echo failure1
       - run: echo 2
+        id: step2
       - name: failure2
-        if: ${{ failure() }}
         run: echo failure2
