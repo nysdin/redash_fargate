@@ -1,0 +1,15 @@
+name: Deploy
+on:
+  push:
+jobs:
+  failure:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 1
+      - name: failure1
+        if: ${{ failure() }}
+        run: echo failure1
+      - run: echo 2
+      - name: failure2
+        if: ${{ failure() }}
+        run: echo failure2
