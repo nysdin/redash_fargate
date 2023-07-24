@@ -1,0 +1,13 @@
+name: string boolean test
+on:
+  workflow_call:
+    inputs:
+      text:
+        required: false
+        default: "hoge"
+        type: string
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ inputs.text }}
