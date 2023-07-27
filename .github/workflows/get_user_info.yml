@@ -1,0 +1,13 @@
+name: Get User Info
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  get-user-info:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ github.actor }}
+          echo ${{ github.actor_id }}
+          echo ${{ github.event }}

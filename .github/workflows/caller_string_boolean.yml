@@ -7,7 +7,7 @@ on:
         type: string
 
 jobs:
-  prod-deploy:
+  test:
     uses: ./.github/workflows/string_boolean.yml
     with:
       text: ${{ inputs.text || github.sha }}
