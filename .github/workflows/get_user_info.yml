@@ -1,6 +1,6 @@
 name: Get User Info
 on:
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:

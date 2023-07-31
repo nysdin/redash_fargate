@@ -8,7 +8,7 @@ jobs:
     steps:
       - run: sleep 60
       - name: failure
-        if: ${{ !failure() }}
+        if: ${{ !cancelled() && !failure() }}
         run: echo "!failure()"
       - name: cancel
         if: ${{ !cancelled() }}
