@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
 env:
   OUTSIDE_ENV: outside_env
-  TZ: Asia/Tokyo
 jobs:
   contianer_environment:
     runs-on: ubuntu-latest
