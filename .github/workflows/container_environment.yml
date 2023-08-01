@@ -1,0 +1,16 @@
+name: Container Envoriment Test
+on:
+  push:
+  workflow_dispatch:
+env:
+  OUTSIDE_ENV: outside_env
+jobs:
+  contianer_environment:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+      env:
+        INNER_CONTAINER_ENV: inner_container_env
+    steps:
+      - run: echo $OUTSIDE_ENV
+      - run: echo $INNER_CONTAINER_ENV
