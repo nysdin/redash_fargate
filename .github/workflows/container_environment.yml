@@ -11,6 +11,7 @@ jobs:
       image: ubuntu:22.04
       env:
         INNER_CONTAINER_ENV: inner_container_env
+        TZ: Asia/Tokyo
     steps:
       - run: echo $OUTSIDE_ENV
       - run: echo $INNER_CONTAINER_ENV
