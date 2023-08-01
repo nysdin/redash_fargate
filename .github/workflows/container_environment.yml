@@ -14,3 +14,4 @@ jobs:
     steps:
       - run: echo $OUTSIDE_ENV
       - run: echo $INNER_CONTAINER_ENV
+      - run: date
