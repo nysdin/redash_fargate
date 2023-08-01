@@ -4,13 +4,14 @@ on:
   workflow_dispatch:
 env:
   OUTSIDE_ENV: outside_env
+  TZ: Asia/Tokyo
 jobs:
   contianer_environment:
     runs-on: ubuntu-latest
-    # container:
-    #   image: ubuntu:22.04
-    #   env:
-    #     INNER_CONTAINER_ENV: inner_container_env
+    container:
+      image: ubuntu:22.04
+      env:
+        INNER_CONTAINER_ENV: inner_container_env
     steps:
       - run: echo $OUTSIDE_ENV
       - run: echo $INNER_CONTAINER_ENV
