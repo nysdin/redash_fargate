@@ -1,5 +1,6 @@
-name: Failure test
+name: Github Environment Deployment
 on:
+  push:
   workflow_call:
     inputs:
       environment:
@@ -9,6 +10,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      url: ${{ vars.DEPLOYMENT_URL }}
     steps:
       - run: echo Deploy ${{ inputs.environment }}
