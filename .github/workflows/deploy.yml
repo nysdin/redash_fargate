@@ -1,14 +1,22 @@
 name: Github Environment Deployment
 on:
-  push:
-  workflow_call:
-    inputs:
-      environment:
-        description: "Github Environments"
-        required: true
-        type: string
+  # push:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [build]
+    types:
+      - completed
+    branches:
+      - develop
+  # workflow_call:
+  #   inputs:
+  #     environment:
+  #       description: "Github Environments"
+  #       required: true
+  #       type: string
 jobs:
   deploy:
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}

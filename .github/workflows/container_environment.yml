@@ -1,6 +1,6 @@
 name: Container Envoriment Test
 on:
-  push:
+  # push:
   workflow_dispatch:
 env:
   OUTSIDE_ENV: outside_env
