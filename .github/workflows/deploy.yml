@@ -14,7 +14,7 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+      name: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
       url: ${{ vars.DEPLOYMENT_URL }}
     steps:
       - uses: actions/checkout@v3
