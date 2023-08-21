@@ -1,5 +1,5 @@
 name: Github Environment Deployment
-run-name: Github Environment Deployment【${{github.ref_name }}】
+run-name: Github Environment Deployment【${{ github.event.workflow_run.head_branch && github.ref_name }}】
 on:
   workflow_dispatch:
   workflow_run:
@@ -23,6 +23,7 @@ jobs:
       name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
       url: ${{ vars.DEPLOYMENT_URL }}
     steps:
+      - uses: actions/checkout@v3
       - run: echo "github.event.workflow_run.head_branch ${{ github.event.workflow_run.head_branch }}"
       - run: echo "github.event.workflow_run.head_branch ${{ github.event.workflow_run.head_branch }}"
       - run: echo "github.event_name ${{ github.event_name }}"
