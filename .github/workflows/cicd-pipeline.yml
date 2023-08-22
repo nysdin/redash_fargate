@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo build
+      - run: sleep 60
+      - run: exit 1
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+  ci-check:
+    if: always()
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "CI Check"
+      - if: ${{ needs.build.result != 'success' || needs.test.result != 'success'}}
+        run: |
+          echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "CI Failed" && exit 1
+  deploy:
+    needs: [ci-check]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo job3

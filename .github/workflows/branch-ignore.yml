@@ -1,0 +1,10 @@
+name: Branch Ignore(main)
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.ref_name }}
