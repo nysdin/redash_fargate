@@ -16,5 +16,5 @@ jobs:
           curl -X POST \
             -H "Autorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/nysdin/redash_fargate/actions/wrokflows/deploy.yml/dispatches" \
+            "https://api.github.com/repos/nysdin/redash_fargate/actions/workflows/deploy.yml/dispatches" \
             -d '{ "ref": "main" }'
