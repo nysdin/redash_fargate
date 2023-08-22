@@ -26,3 +26,4 @@ jobs:
   deploy:
     needs: [ci-check]
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
