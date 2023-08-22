@@ -1,7 +1,7 @@
 name: Github Environment Deployment
-# run-name: Github Environment Deployment【${{ github.event.workflow_run.head_branch || github.ref_name }}】
 run-name: Github Environment Deployment【${{ github.ref_name }}】
 on:
+  workflow_call:
   workflow_dispatch:
   # workflow_run:
   #   workflows: [build]
@@ -12,10 +12,8 @@ on:
   #     - develop
 jobs:
   deploy:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     environment:
-      # name: ${{ (github.event.workflow_run.head_branch == 'main' || github.ref_name == 'main') && 'production' || 'staging' }}
       name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
       url: ${{ vars.DEPLOYMENT_URL }}
     steps:
@@ -27,3 +25,5 @@ jobs:
       - run: echo "github.event.workflow_run.head_branch ${{ github.event.workflow_run.head_branch }}"
       - run: echo "github.event_name ${{ github.event_name }}"
       - run: echo "github.ref_name ${{ github.ref_name }}"
+
+      - run: echo ${{ secrets.ENVIRONMENT_SECRET }}

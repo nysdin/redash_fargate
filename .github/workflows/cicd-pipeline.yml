@@ -1,14 +1,14 @@
 name: CI/CD Pipeline
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - run: echo build
-      - run: sleep 60
-      - run: exit 1
   test:
     runs-on: ubuntu-latest
     steps:
@@ -25,6 +25,4 @@ jobs:
           echo "CI Failed" && exit 1
   deploy:
     needs: [ci-check]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo job3
+    uses: ./.github/workflows/deploy.yml
