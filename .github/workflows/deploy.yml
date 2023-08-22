@@ -1,5 +1,5 @@
 name: Github Environment Deployment
-run-name: Github Environment Deployment【${{ github.event.workflow_run.head_branch || github.ref_name }}】
+# run-name: Github Environment Deployment【${{ github.event.workflow_run.head_branch || github.ref_name }}】
 run-name: Github Environment Deployment【${{ github.ref_name }}】
 on:
   workflow_dispatch:
