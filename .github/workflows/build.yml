@@ -14,7 +14,7 @@ jobs:
     steps:
       - run: |
           curl -X POST \
-            -H "Autorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Autorization: token ${{ secrets.DEPLOY_PAT }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/nysdin/redash_fargate/actions/workflows/deploy.yml/dispatches" \
             -d '{ "ref": "main" }'
