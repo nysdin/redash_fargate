@@ -8,3 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Ok"
+  trigger-deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -X POST \
+            -H "Autorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/nysdin/redash_fargate/actions/wrokflows/deploy.yml/dispatches" \
+            -d '{ "ref": "main" }'
