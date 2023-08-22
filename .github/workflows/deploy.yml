@@ -27,3 +27,9 @@ jobs:
       - run: echo "github.ref_name ${{ github.ref_name }}"
 
       - run: echo ${{ secrets.ENVIRONMENT_SECRET }}
+      - uses: slackapi/slack-github-action@v1.24.0
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_OAUTH_TOKEN }}
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          slack-message: "Hello"
