@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "CI Check"
-      - run: echo "${{ needs.*.result }}"
+      - run: echo "${{ toJson(needs.*.result) }}"
       - if: ${{ needs.build.result != 'success' || needs.test.result != 'success'}}
         run: |
           echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
