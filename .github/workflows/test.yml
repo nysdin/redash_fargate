@@ -21,6 +21,11 @@ jobs:
           else
             echo "not!"
           fi
+          if [[ ${{inputs.user-id}} ]]; then
+            echo "exits!"
+          else
+            echo "not!"
+          fi
           echo "inputs: ${{inputs.user-id}}"
       - run: pwd
       - run: whoami
