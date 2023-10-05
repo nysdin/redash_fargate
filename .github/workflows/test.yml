@@ -26,11 +26,6 @@ jobs:
           else
             echo "not!"
           fi
-          if [[ ${{inputs.user-id}} === null ]]; then
-            echo "null!"
-          else
-            echo "not!"
-          fi
           if [[ ${{inputs.user-id == null}}]]; then
             echo "null!"
           else
