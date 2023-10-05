@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          if [[ -z ${{inputs.user-id}}]]; then
+          if [[ -z "${{inputs.user-id}}" ]]; then
             echo "exits!"
           else
             echo "not!"
