@@ -58,6 +58,15 @@ data "aws_iam_policy_document" "gihub_actions_assume_role_policy" {
 
 #########################################
 #
+# IAM Role
+#
+#########################################
+data "aws_iam_role" "aws_lambda_basic_execution_role" {
+  name = "AWSLambdaBasicExecutionRole"
+}
+
+#########################################
+#
 # IAM Policy Document
 #
 #########################################
