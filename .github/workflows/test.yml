@@ -1,7 +1,11 @@
 name: Test
 on:
   workflow_dispatch:
-  # push:
+    # push:
+    inputs:
+      user-id:
+        required: false
+        type: string
 
 env:
   date: $(date "+%Y%m%d")
@@ -11,6 +15,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - run: |
+          if [[ -z ${{inputs.user-id}}]]; then
+            echo "exits!"
+          else
+            echo "not!"
+          fi
+          echo "inputs: ${{inputs.user-id}}"
       - run: pwd
       - run: whoami
       - run: echo $GITHUB_WORKSPACE
