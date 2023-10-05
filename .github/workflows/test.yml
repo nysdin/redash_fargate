@@ -17,12 +17,12 @@ jobs:
     steps:
       - run: |
           if [[ -z "${{inputs.user-id}}" ]]; then
-            echo "exits!"
-          else
             echo "not!"
+          else
+            echo "exist!"
           fi
           if [[ "${{inputs.user-id}}" ]]; then
-            echo "exits!"
+            echo "exist!"
           else
             echo "not!"
           fi
@@ -31,7 +31,7 @@ jobs:
           else
             echo "not!"
           fi
-          f [[ ${{inputs.user-id == null}}]]; then
+          if [[ ${{inputs.user-id == null}}]]; then
             echo "null!"
           else
             echo "not!"
