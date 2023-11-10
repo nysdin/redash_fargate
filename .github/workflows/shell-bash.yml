@@ -1,16 +1,26 @@
 name: Run shell bash
 on:
   workflow_dispatch:
+    inputs:
+      test:
+        required: false
+        type: string
   push:
 
 env:
   date: $(date "+%Y%m%d")
   hoge: hoge
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - shell: bash
-        run: |
+      - name: inputs test
+        if: ${{ inputs.test != '' }}
+        run: echo ${{ inputs.test }}
+      - run: |
           exit 1 | echo "hoge"
