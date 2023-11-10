@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation Template Sample VPC"
+
+Parameters:
+  VPCCidrBlock:
+    Type: String
+    Default: "10.5.0.0/16"
+
+Resources:
+  # VPC
+  TestVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCidrBlock
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      InstanceTenancy: "default"
+      Tags:
+        - Key: Name
+          Value: "test-vpc"
+Outputs:
+  VPCID:
+    Value: !Ref TestVPC
+    Export:
+      Name: SampleVPCID # リージョン内で一意の名前にすること

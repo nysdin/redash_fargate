@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation Sample Subnet"
+Parameters:
+  VPCID:
+    Description: VPC ID
+    Type: String
+  SubnetCidrBlock:
+    Type: String
+    Default: "10.5.1.0/24"
+
+Resources:
+  TestSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: !Ref SubnetCidrBlock
+      VpcId: !Ref VPCID
+      Tags:
+        - Key: Name
+          Value: "test-subnet"
+
+Outputs:
+  SubnetID:
+    Value: !Ref TestSubnet
+    Export:
+      Name: SampleSubnetID # リージョン内で一意の名前にすること

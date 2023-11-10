@@ -1,0 +1,16 @@
+name: Run shell bash
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  date: $(date "+%Y%m%d")
+  hoge: hoge
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          exit 1
+          echo "hoge"

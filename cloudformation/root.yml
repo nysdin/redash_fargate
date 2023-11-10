@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "CloudFormation Root Template"
+
+Parameters:
+  TemplateVPC:
+    Description: VPC template Object URL
+    Type: String
+  TemplateSubnet:
+    Description: Subnet template Object URL
+    Type: String
+
+Resources:
+  VPC:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateVPC
+  Subnet:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref TemplateSubnet
+      Parameters:
+        VPCID: !GetAtt VPC.Outputs.VPCID
+
+Outputs:
+  SubnetID:
+    Value: Subnet.Outputs.SubnetID
