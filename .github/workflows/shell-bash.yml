@@ -15,4 +15,4 @@ jobs:
           echo "test" > test.txt
           cat test.txt
           grep hoge test.txt
-          # echo "hoge"
+          echo "hoge"
