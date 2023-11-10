@@ -12,5 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          exit 1
-          echo "hoge"
+          echo "test" > test.txt
+          cat test.txt
+          grep hoge test.txt
+          # echo "hoge"
