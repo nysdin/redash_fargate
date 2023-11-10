@@ -11,5 +11,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - shell: bash
+        run: |
           exit 1 | echo "hoge"
