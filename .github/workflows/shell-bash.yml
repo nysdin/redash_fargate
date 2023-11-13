@@ -3,9 +3,10 @@ on:
   workflow_dispatch:
     inputs:
       test:
+        description: test inputs(optional)
         required: false
         type: string
-  push:
+  # push:
 
 env:
   date: $(date "+%Y%m%d")
