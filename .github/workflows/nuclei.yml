@@ -1,7 +1,9 @@
 name: Nuclei - Vulnerability Scan
 on:
-  push:
+  # push:
   workflow_dispatch:
+  schedule:
+    - cron: "30 7 * * *"
 
 jobs:
   nuclei-scan:
