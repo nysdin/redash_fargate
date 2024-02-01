@@ -11,7 +11,7 @@ templates:
 # Template Filters
 # tags: exposures,cve
 # author: geeknik,pikpikcu,dhiyaneshdk
-# severity: critical,high,medium
+severity: critical,high,medium,info
 
 # Template Denylist
 # exclude-tags: info # Tag based exclusion
