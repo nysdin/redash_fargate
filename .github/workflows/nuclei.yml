@@ -13,7 +13,7 @@ jobs:
         uses: projectdiscovery/nuclei-action@main
         with:
           target: https://example.com
-          # config: nuclei.config.yml
-          flags: --stats
+          config: nuclei.config.yml
+          flags: --stats-interval 30
           github-report: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
