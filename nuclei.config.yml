@@ -1,0 +1,25 @@
+# Headers to include with all HTTP request
+# header:
+#   - 'X-BugBounty-Hacker: h1/geekboy'
+
+# Directory based template execution
+templates:
+  - ssl/
+  # - vulnerabilities/
+  # - misconfiguration/
+
+# Template Filters
+# tags: exposures,cve
+# author: geeknik,pikpikcu,dhiyaneshdk
+severity: critical,high,medium,info
+
+# Template Denylist
+# exclude-tags: info # Tag based exclusion
+# exclude-templates: # Template based exclusion
+#   - vulnerabilities/xxx
+#   - misconfiguration/xxxx
+
+# Rate Limit configuration
+rate-limit: 500
+bulk-size: 50
+concurrency: 50

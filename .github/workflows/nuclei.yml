@@ -1,0 +1,21 @@
+name: Nuclei - Vulnerability Scan
+on:
+  # push:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "30 7 * * *"
+
+jobs:
+  nuclei-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Nuclei - Vulnerability Scan
+        uses: projectdiscovery/nuclei-action@main
+        with:
+          target: https://example.com
+          config: nuclei.config.yml
+          flags: --stats-interval 30
+          github-report: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
