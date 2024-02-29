@@ -1,0 +1,24 @@
+name: get commit sha
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+    outputs:
+      commit-sha:
+        value: ${{jobs.job.outputs.github-sha}}
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    outputs:
+      github-sha: ${{ steps.github-sha.outputs.github_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - run: git rev-parse main
+      - run: git branch -a
+      - id: github-sha
+        run: echo "github_sha=$(git rev-parse main)" >> "$GITHUB_OUTPUT"
