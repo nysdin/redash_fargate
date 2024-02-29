@@ -1,6 +1,13 @@
 name: Deploy To ECS
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      env:
+        type: string
+      github-sha:
+        type: string
+        default: github-sha
   # push:
   #   branches:
   #     - main
@@ -22,25 +29,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-      - name: Render Amazon ECS task definition
-        id: render-redash-task-definition
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: .github/task_definitions/redash.json
-          container-name: server
-          image: redash/redash:10.0.0.b50363
-      - name: Deploy to Amazon ECS service
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.render-redash-task-definition.outputs.task-definition }}
-          service: ${{ env.SERVICE_NAME }}
-          cluster: ${{ env.CLUSTER_NAME }}
-          wait-for-service-stability: true
-          codedeploy-appspec: appspec.yml
-          codedeploy-application: ${{ env.CODEDEPLOY_APPLICATION }}
-          codedeploy-deployment-group: ${{ env.CODEDEPLOY_DEPLOYMENT_GROUP }}
+      - run: echo ${{ inputs.github-sha }}
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
+      #     aws-region: ${{ env.AWS_REGION }}
+      # - name: Render Amazon ECS task definition
+      #   id: render-redash-task-definition
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: .github/task_definitions/redash.json
+      #     container-name: server
+      #     image: redash/redash:10.0.0.b50363
+      # - name: Deploy to Amazon ECS service
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: ${{ steps.render-redash-task-definition.outputs.task-definition }}
+      #     service: ${{ env.SERVICE_NAME }}
+      #     cluster: ${{ env.CLUSTER_NAME }}
+      #     wait-for-service-stability: true
+      #     codedeploy-appspec: appspec.yml
+      #     codedeploy-application: ${{ env.CODEDEPLOY_APPLICATION }}
+      #     codedeploy-deployment-group: ${{ env.CODEDEPLOY_DEPLOYMENT_GROUP }}
