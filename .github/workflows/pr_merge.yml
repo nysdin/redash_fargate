@@ -8,10 +8,6 @@ on:
       - develop
 
 jobs:
-  job1:
-    uses: ./.github/workflows/get-commit-sha.yml
-    with:
-      branch: main
   deploy:
     runs-on: ubuntu-latest
     steps:
