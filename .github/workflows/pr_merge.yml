@@ -1,4 +1,4 @@
-name: get other branch commit id
+name: PR Merge
 
 on:
   pull_request:
@@ -8,10 +8,6 @@ on:
       - develop
 
 jobs:
-  job1:
-    uses: ./.github/workflows/get-commit-sha.yml
-    with:
-      branch: main
   deploy:
     runs-on: ubuntu-latest
     steps:
