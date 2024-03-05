@@ -1,0 +1,24 @@
+name: get other branch commit id
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+
+jobs:
+  job1:
+    uses: ./.github/workflows/get-commit-sha.yml
+    with:
+      branch: main
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo deploy
+  job3:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'deploy') && always()
+    steps:
+      - run: job3
