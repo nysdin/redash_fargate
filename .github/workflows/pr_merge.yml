@@ -1,4 +1,4 @@
-name: get other branch commit id
+name: PR Merge
 
 on:
   pull_request:
