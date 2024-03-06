@@ -1,0 +1,10 @@
+name: List PR Label
+
+on:
+  workflow_call:
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.event.pull_request.labels.*.name }}
