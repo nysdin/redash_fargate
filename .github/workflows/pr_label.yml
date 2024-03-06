@@ -1,0 +1,12 @@
+gbname: Get PR Label
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - develop
+
+jobs:
+  list_label:
+    uses: ./.github/workflows/list_label.yml
