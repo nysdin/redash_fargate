@@ -8,3 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ github.event.pull_request.labels.*.name }}
+      - name: patch
+        if: contains(github.event.pull_request.labels.*.name, 'release:patch')
+        run: echo patch
+      - name: minor
+        if: contains(github.event.pull_request.labels.*.name, 'release:minor')
+        run: echo minor
