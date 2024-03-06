@@ -1,4 +1,4 @@
-gbname: Get PR Label
+name: Get PR Label
 
 on:
   pull_request:
