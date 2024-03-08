@@ -1,14 +1,17 @@
 name: CI/CD Pipeline
+
+run-name: ${{ github.workflow }}
+
 on:
   # push:
   #   branches:
   #     - main
   workflow_dispatch:
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches:
+  #     - main
 jobs:
   build:
     if: github.event.pull_request.merged == true
