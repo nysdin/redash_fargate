@@ -1,5 +1,7 @@
 name: Release Drafter
 
+run-name: ${{ github.workflow }}
+
 on:
   workflow_call:
   push:
