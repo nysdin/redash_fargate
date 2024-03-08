@@ -18,6 +18,9 @@ permissions:
 
 jobs:
   update_release_draft:
+    if: |
+      github.event.pull_request.merged == false ||
+      (github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release_version_incremental'))
     permissions:
       # write permission is required to create a github release
       contents: write
