@@ -10,11 +10,18 @@ categories:
       - "fix"
       - "bugfix"
       - "bug"
-  - title: "🧰 Maintenance"
-    label: "chore"
   - title: "⬆️ Dependencies"
     labels:
       - "dependencies"
+autolabeler:
+  - label: "documentation"
+    files:
+      - "*.md"
+    branch:
+      - '/docs{0,1}\/.+/'
+  - label: "feature"
+    branch:
+      - '/feature\/.+/'
 change-template: "- $TITLE by @$AUTHOR in #$NUMBER"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
