@@ -4,10 +4,17 @@ on:
   #   branches:
   #     - main
   workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 jobs:
-  # release-drafter:
-  #   uses: ./.github/workflows/release-drafter.yml
+  release-drafter:
+    if: github.event.pull_request.merged == true
+    uses: ./.github/workflows/release-drafter.yml
   build:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - run: echo build
@@ -16,7 +23,7 @@ jobs:
     steps:
       - run: echo test
   ci-check:
-    if: always()
+    if: always() && github.event.pull_request.merged == true
     needs: [build, test]
     runs-on: ubuntu-latest
     steps:
@@ -26,7 +33,8 @@ jobs:
         run: |
           echo "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           echo "CI Failed" && exit 1
-  deploy:
-    needs: [ci-check]
-    uses: ./.github/workflows/deploy.yml
-    secrets: inherit
+  # deploy:
+  #   if: github.event.pull_request.merged == true
+  #   needs: [ci-check]
+  #   uses: ./.github/workflows/deploy.yml
+  #   secrets: inherit

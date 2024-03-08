@@ -5,5 +5,3 @@
 | email            | password | organaization |
 | ---------------- | -------- | ------------- |
 | ysthon@gmail.com | password | nysdin        |
-
-## Release Note
