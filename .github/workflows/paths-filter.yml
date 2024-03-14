@@ -21,7 +21,6 @@ jobs:
         with:
           filters: |
             paths:
-              - '!cloudformation/**'
               - '!.github/**'
   build:
     needs: [need-cd]
