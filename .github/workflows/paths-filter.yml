@@ -24,7 +24,7 @@ jobs:
             predicate-quantifier: 'every'
             paths:
               - '!.github/**'
-              - '!.cloudformation/**'
+              - '!cloudformation/**'
   build:
     needs: [need-cd]
     runs-on: ubuntu-latest
