@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  need-cd:
+  skip-cd:
     runs-on: ubuntu-latest
     outputs:
       paths: ${{ steps.changes.outputs.paths }}
@@ -21,15 +21,16 @@ jobs:
         with:
           filters: |
             paths:
-              - '!.github/**'
+              - '.github/**'
+              - '.cloudformation/**'
   build:
-    needs: [need-cd]
+    needs: [skip-cd]
     runs-on: ubuntu-latest
     steps:
       - run: echo build
   version-increment:
     runs-on: ubuntu-latest
-    needs: [need-cd]
-    if: needs.need-cd.outputs.paths == 'true'
+    needs: [skip-cd]
+    if: needs.skip-cd.outputs.paths == 'true'
     steps:
       - run: echo version-increment
