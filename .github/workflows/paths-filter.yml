@@ -29,7 +29,7 @@ jobs:
     needs: [need-cd]
     runs-on: ubuntu-latest
     steps:
-      - run: ech ${{ needs.need-cd.outputs.changes }}
+      - run: echo ${{ needs.need-cd.outputs.changes }}
       - run: echo build
   version-increment:
     runs-on: ubuntu-latest
