@@ -1,4 +1,3 @@
-# hoge
 resource "aws_alb" "redash" {
   name                       = "redash"
   load_balancer_type         = "application"
