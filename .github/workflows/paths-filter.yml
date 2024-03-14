@@ -22,6 +22,7 @@ jobs:
           filters: |
             paths:
               - '!cloudformation/**'
+              - '!.github/**'
   build:
     needs: [need-cd]
     runs-on: ubuntu-latest
