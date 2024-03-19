@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changes: ${{ steps.filter.outputs.changes }}
-      paths: ${{ steps.changes.outputs.paths }}
+      paths: ${{ steps.filter.outputs.paths }}
     permissions:
       pull-requests: read
       contents: read
