@@ -26,7 +26,7 @@ jobs:
           # predicate-quantifier: "every" # TODO
           filters: |
             paths:
-              - '!cloudformation/**'
+              - '!.github/**'
   build:
     needs: [need-cd]
     runs-on: ubuntu-latest
