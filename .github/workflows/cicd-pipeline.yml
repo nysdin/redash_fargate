@@ -67,6 +67,7 @@ jobs:
       !contains(github.event.pull_request.labels.*.name, 'release_version_incremental')
     steps:
       - run: echo ${{ needs.release-version-increment.outputs.sha || 'fallback' }}
+      - run: echo test
 
   ci-check:
     if: |
