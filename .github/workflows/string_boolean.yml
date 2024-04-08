@@ -1,6 +1,6 @@
 name: string boolean test
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       text:
         required: false
