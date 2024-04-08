@@ -4,10 +4,12 @@ on:
     inputs:
       text:
         required: false
-        default: "hoge"
         type: string
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ inputs.text }}
+      - if: inputs.text
+        run: echo ${{ inputs.text }}
+      - if: inputs.text != ''
+        run: echo "inputs.text != ''"
