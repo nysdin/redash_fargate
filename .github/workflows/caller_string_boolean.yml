@@ -1,13 +1,11 @@
 name: Caller String Boolean Test
 on:
   workflow_dispatch:
-    inputs:
-      text:
-        required: false
-        type: string
+    # inputs:
+    #   text:
+    #     required: false
+    #     type: string
 
 jobs:
   test:
     uses: ./.github/workflows/string_boolean.yml
-    with:
-      text: ${{ inputs.text || github.sha }}
