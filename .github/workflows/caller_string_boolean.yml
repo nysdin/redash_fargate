@@ -9,3 +9,5 @@ on:
 jobs:
   test:
     uses: ./.github/workflows/string_boolean.yml
+    with:
+      command: bundle exec rails db:migrate
