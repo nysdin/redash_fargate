@@ -2,14 +2,14 @@ name: string boolean test
 on:
   workflow_call:
     inputs:
-      text:
+      command:
         required: false
         type: string
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - if: inputs.text
-        run: echo ${{ inputs.text }}
-      - if: inputs.text != ''
-        run: echo "inputs.text != ''"
+      - if: inputs.command
+        run: echo ${{ inputs.command }}
+      - if: inputs.command != ''
+        run: echo "inputs.command != ''"
