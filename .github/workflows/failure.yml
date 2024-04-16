@@ -1,13 +1,13 @@
 name: Failure test
 on:
-  # push:
-  workflow_dispatch:
+  push:
+  # workflow_dispatch:
 jobs:
   failure:
     runs-on: ubuntu-latest
     steps:
-      - run: exit 1
-        id: step1
+      - id: step1
+        run: exit 1
       - name: failure1
         if: ${{ failure() }}
         run: echo failure1
@@ -15,3 +15,9 @@ jobs:
         id: step2
       - name: failure2
         run: echo failure2
+  always:
+    needs: [failure]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ needs.failure.result }}

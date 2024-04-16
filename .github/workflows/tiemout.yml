@@ -1,0 +1,11 @@
+name: timeout workflow
+on:
+  workflow_dispatch:
+
+jobs:
+  timeout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: timeout
+        timeout-minutes: 1
+        run: sleep 180
