@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: step1
-        run: exit 1
+        run: exit 0
       - name: failure1
         if: ${{ failure() }}
         run: echo failure1
