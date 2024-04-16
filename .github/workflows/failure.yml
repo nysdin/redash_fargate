@@ -16,6 +16,7 @@ jobs:
       - name: failure2
         run: echo failure2
   always:
+    if: ${{ always() }}
     needs: [failure]
     runs-on: ubuntu-latest
     steps:
