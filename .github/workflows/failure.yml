@@ -15,8 +15,8 @@ jobs:
         id: step2
       - name: failure2
         run: echo failure2
-  always:
-    if: ${{ always() }}
+  run-failrue:
+    if: ${{ always() && needs.failure.result == 'failure' }}
     needs: [failure]
     runs-on: ubuntu-latest
     steps:
