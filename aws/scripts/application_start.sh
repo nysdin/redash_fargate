@@ -9,3 +9,5 @@ cd /opt/redash_fargate
 echo $IMAGE_TAG
 
 printenv
+
+docker-compose up -d
