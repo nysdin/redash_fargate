@@ -1,10 +1,30 @@
+# version: 0.0
+# Resources:
+#   - TargetService:
+#       Type: AWS::ECS::Service
+#       Properties:
+#         TaskDefinition: "" # Specify th ARN of task definition
+#         LoadBalancerInfo:
+#           ContainerName: "server"
+#           ContainerPort: "5000"
+#         PlatformVersion: "LATEST"
+
+
+# For EC2
 version: 0.0
-Resources:
-  - TargetService:
-      Type: AWS::ECS::Service
-      Properties:
-        TaskDefinition: "" # Specify th ARN of task definition
-        LoadBalancerInfo:
-          ContainerName: "server"
-          ContainerPort: "5000"
-        PlatformVersion: "LATEST"
+os: linux
+files:
+  - source: /
+    destination: /opt/redash_fargate
+hooks:
+  ApplicationStop:
+    - location: aws/scripts/application_stop.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: aws/scripts/set_env.sh
+      timeout: 300
+      runas: root
+    - location: aws/scripts/application_start.sh
+      timeout: 300
+      runas: root
