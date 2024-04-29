@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euCo pipefail
+set -xeuCo pipefail
 
 COMMIT_ID=$(git rev-parse HEAD)
 echo "${COMMIT_ID}"
