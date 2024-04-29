@@ -11,5 +11,5 @@ echo $IMAGE_TAG
 printenv
 echo "start sleep 180"
 sleep 180
-echo " finish sleep 180"
+echo "finish sleep 180"
 docker-compose up -d
