@@ -3,7 +3,7 @@ name: CodeBuild Github Runner Workflow
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/3 * * * *'
+    - cron: '*/10 * * * *'
 
 
 jobs:
