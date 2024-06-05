@@ -2,8 +2,6 @@ name: Failure test
 on:
   # push:
   workflow_dispatch:
-  schedule:
-    - cron: '*/2 * * * *'
 jobs:
   failure:
     runs-on: ubuntu-latest
