@@ -1,0 +1,15 @@
+name: CodeBuild Github Runner Workflow
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '*/2 * * * *'
+
+
+jobs:
+  build:
+    runs-on: codebuild-self-hosted-runner-${{ github.run_id }}-${{ github.run_attempt }}
+
+    steps:
+      - run: which aws
+      - run: aws --version
