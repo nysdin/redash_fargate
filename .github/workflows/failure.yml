@@ -1,6 +1,6 @@
 name: Failure test
 on:
-  push:
+  # push:
   # workflow_dispatch:
 jobs:
   failure:
