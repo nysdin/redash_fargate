@@ -3,6 +3,7 @@ name: Release Drafter
 run-name: ${{ github.workflow }}
 
 on:
+  workflow_dispatch:
   # workflow_call:
   # push:
   #   # branches to consider in the event; optional, defaults to all
