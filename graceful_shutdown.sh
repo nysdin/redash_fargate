@@ -42,3 +42,4 @@ done
 
 # Complete the lifecycle action
 aws autoscaling complete-lifecycle-action --lifecycle-hook-name "${LIFECYCLE_HOOK_NAME}" --auto-scaling-group-name "${AUTO_SCALING_GROUP_NAME}" --instance-id "${INSTANCE_ID}" --lifecycle-action-result CONTINUE
+echo "Complete lifecycle action."
