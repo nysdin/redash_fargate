@@ -13,6 +13,7 @@ function exists_in_progress_run_command() {
   local instance_id=$1
 
   if [[ $(aws ssm list-command-invocations --instance-id "${instance_id}" --filters key=Status,value=InProgress | jq -r '.CommandInvocations | length') -gt 0 ]]; then
+    aws ssm list-command-invocations --instance-id "i-08961468a7b2764f9" --filters key=Status,value=InProgress | jq -r '.CommandInvocations[] | "CommandID: \(.CommandId), Status: \(.Status)"'
     return 0
   else
     return 1
