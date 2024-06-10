@@ -23,7 +23,7 @@ hooks:
       runas: root
   ApplicationStart:
     - location: aws/scripts/set_env.sh
-      timeout: 300
+      timeout: 600
       runas: root
     - location: aws/scripts/application_start.sh
       timeout: 300
