@@ -23,7 +23,7 @@ jobs:
           --health-start-period 10s
           --health-timeout 5s
           --health-retries 10
-    runs-on: ubuntu-latest
+    runs-on: codebuild-staging-db-migration-${{ github.run_id }}-${{ github.run_attempt }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
       DATABASE_URL: 'maria://root:root@mariadb:3306'
@@ -32,6 +32,11 @@ jobs:
         with:
           fetch-depth: 0
       - run: git branch main origin/main
+      - name: Login to Docker Hub
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
       - name: Setup github-comment
         run: |
           wget https://github.com/suzuki-shunsuke/github-comment/releases/download/v${{ env.GITHUB_COMMENT_VERSION }}/github-comment_${{ env.GITHUB_COMMENT_VERSION }}_linux_amd64.tar.gz
@@ -40,6 +45,7 @@ jobs:
         env:
           GITHUB_COMMENT_VERSION: 6.1.0
       - uses: ariga/setup-atlas@v0
+      - run: atlas migrate lint --env ci --git-base main
       - name: atlas lint
         run: |
           github-comment hide -k atlas_lint

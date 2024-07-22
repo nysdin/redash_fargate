@@ -8,7 +8,7 @@ permissions:
   pull-requests: write # github-comment
 jobs:
   atlas:
-    runs-on: ubuntu-latest
+    runs-on: codebuild-production-db-migration-${{ github.run_id }}-${{ github.run_attempt }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
