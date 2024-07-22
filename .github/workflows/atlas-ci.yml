@@ -1,8 +1,8 @@
 name: Atlas CI
 on:
-  # push:
-  #   branches-ignore:
-  #     - main
+  push:
+    branches:
+      - main
   pull_request:
     paths:
       - 'db/migrations/*' # Use the path to your migration directory here.
