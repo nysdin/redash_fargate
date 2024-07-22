@@ -1,0 +1,28 @@
+name: Atlas CI (DB Migration)
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: read # actions/chekout
+  pull-requests: write # github-comment
+jobs:
+  atlas:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      DATABASE_URL: 'maria://root:root@mariadb:3306'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup github-comment
+        run: |
+          wget https://github.com/suzuki-shunsuke/github-comment/releases/download/v${{ env.GITHUB_COMMENT_VERSION }}/github-comment_${{ env.GITHUB_COMMENT_VERSION }}_linux_amd64.tar.gz
+          tar -vxf ./github-comment_${{ env.GITHUB_COMMENT_VERSION }}_linux_amd64.tar.gz github-comment
+          sudo mv github-comment /usr/bin
+        env:
+          GITHUB_COMMENT_VERSION: 6.1.0
+      - uses: ariga/setup-atlas@v0
+      - name: atlas status
+        run: atlas migrate status --env production
+      - name: atlas apply dry-run
+        run: atlas migrate apply --dry-run --env production

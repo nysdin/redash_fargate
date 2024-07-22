@@ -1,0 +1,23 @@
+---
+# https://github.com/suzuki-shunsuke/github-comment
+skip_no_token: true
+templates:
+  exec_default: |
+    {{template "status" .}} {{template "link" .}}
+
+    {{template "join_command" .}}
+
+    {{template "hidden_combined_output" .}}
+exec:
+  atlas_lint:
+    - when: true
+      template: |
+        {{template "exec_default" .}}
+  atlas_validate:
+    - when: ExitCode != 0
+      template: |
+        {{template "exec_default" .}}
+
+hide:
+  atlas_lint: 'Comment.HasMeta && Comment.Meta.SHA1 != Commit.SHA1 && Comment.Meta.TemplateKey == "atlas_ci"'
+  atlas_validate: 'Comment.HasMeta && Comment.Meta.SHA1 != Commit.SHA1 && Comment.Meta.TemplateKey == "atlas_validate"'

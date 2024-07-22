@@ -1,0 +1,50 @@
+name: Atlas CI (DB Migration)
+on:
+  pull_request:
+    paths:
+      - 'db/migrations/*' # Use the path to your migration directory here.
+# Permissions to write comments on the pull request.
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  atlas:
+    services:
+      mariadb:
+        image: mariadb:10.6.17
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -uroot -proot"
+          --health-interval 10s
+          --health-start-period 10s
+          --health-timeout 5s
+          --health-retries 10
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      DATABASE_URL: 'maria://root:root@mariadb:3306'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git branch main origin/main
+      - name: Setup github-comment
+        run: |
+          wget https://github.com/suzuki-shunsuke/github-comment/releases/download/v${{ env.GITHUB_COMMENT_VERSION }}/github-comment_${{ env.GITHUB_COMMENT_VERSION }}_linux_amd64.tar.gz
+          tar -vxf ./github-comment_${{ env.GITHUB_COMMENT_VERSION }}_linux_amd64.tar.gz github-comment
+          sudo mv github-comment /usr/bin
+        env:
+          GITHUB_COMMENT_VERSION: 6.1.0
+      - uses: ariga/setup-atlas@v0
+      - name: atlas lint
+        run: |
+          github-comment hide -k atlas_lint
+          github-comment exec -k atlas_lint -- atlas migrate lint --env ci --git-base main
+      - name: atlas validate
+        run: |
+          github-comment hide -k atlas_validate
+          github-comment exec -k atlas_validate -- atlas migrate validate --env ci
