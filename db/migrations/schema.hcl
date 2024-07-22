@@ -17,6 +17,10 @@ table "users" {
     null = false
     type = varchar(255)
   }
+  column "test" {
+    null = false
+    type = varchar(255)
+  }
   primary_key {
     columns = [column.id]
   }

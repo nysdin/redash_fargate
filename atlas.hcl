@@ -55,3 +55,22 @@ env "ci" {
     }
   }
 }
+
+env "production" {
+  src = "file://db/migrations/schema.hcl"                     # The URL of or reference to for the desired schema of this environment.
+  url = var.database_url # The URL of the target database. In Production, This URL is Productin Database URL.
+  dev = "docker://mariadb/10.7"                 # Dev Database URL.
+  schemas = [
+    "nikki"
+  ]
+  migration {
+    dir      = "file://db/migrations" # The URL to the migration directory. ex: file://db/migrations
+    baseline = "20240722023537"       # baseline - An optional version to start the migration history from
+  }
+  diff {
+    skip {
+      drop_table  = false # true: do not generate `drop table SQL` migration file.
+      drop_schema = true  # true: do not generate `drop schema SQL` migration file.
+    }
+  }
+}
