@@ -8,20 +8,6 @@ permissions:
   pull-requests: write # github-comment
 jobs:
   atlas:
-    services:
-      mariadb:
-        image: mariadb:10.6.17
-        env:
-          MARIADB_ROOT_PASSWORD: root
-          MARIADB_DATABASE: test
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping -uroot -proot"
-          --health-interval 10s
-          --health-start-period 10s
-          --health-timeout 5s
-          --health-retries 10
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ github.token }}
@@ -36,5 +22,7 @@ jobs:
         env:
           GITHUB_COMMENT_VERSION: 6.1.0
       - uses: ariga/setup-atlas@v0
+      - name: atlas status
+        run: atlas migrate status --env production
       - name: atlas apply dry-run
         run: atlas migrate apply --dry-run --env production
