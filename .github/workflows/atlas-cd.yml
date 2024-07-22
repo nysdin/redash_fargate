@@ -1,4 +1,4 @@
-name: Atlas CI (DB Migration)
+name: Atlas CD (DB Migration)
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ github.token }}
-      DATABASE_URL: 'maria://root:root@mariadb:3306'
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup github-comment
