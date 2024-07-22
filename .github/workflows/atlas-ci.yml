@@ -1,0 +1,50 @@
+name: Atlas CI
+on:
+  # push:
+  #   branches-ignore:
+  #     - main
+  pull_request:
+    paths:
+      - 'db/migrations/*' # Use the path to your migration directory here.
+# Permissions to write comments on the pull request.
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  atlas:
+    services:
+      mariadb:
+        image: mariadb:10.6.17
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -uroot -proot"
+          --health-interval 10s
+          --health-start-period 10s
+          --health-timeout 5s
+          --health-retries 10
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      DATABASE_URL: 'maria://root:root@mariadb:3306'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ariga/setup-atlas@v0
+      - run: which atlas || true
+      # - uses: ariga/atlas-action/migrate/lint@v1
+      #   with:
+      #     env: ci
+      #     # dir: 'file://migrations'
+      #     dir-name: 'redash-fargate' # The name of the project in Atlas Cloud
+      #     # dev-url: "mysql://root:pass@localhost:3306/dev"
+      # - uses: ariga/atlas-action/migrate/push@v1
+      #   if: github.ref == 'refs/heads/master'
+      #   with:
+      #     dir: 'file://migrations'
+      #     dir-name: 'my-project'
+      #     dev-url: 'mysql://root:pass@localhost:3306/dev' # Use the service name "mysql" as the hostname
