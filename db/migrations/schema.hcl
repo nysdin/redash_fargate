@@ -17,7 +17,7 @@ table "users" {
     null = false
     type = varchar(255)
   }
-  column "test" {
+  column "changed" {
     null = false
     type = varchar(255)
   }

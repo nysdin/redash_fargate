@@ -40,6 +40,7 @@ jobs:
         env:
           GITHUB_COMMENT_VERSION: 6.1.0
       - uses: ariga/setup-atlas@v0
+      - run: atlas migrate lint --env ci --git-base main
       - name: atlas lint
         run: |
           github-comment hide -k atlas_lint
