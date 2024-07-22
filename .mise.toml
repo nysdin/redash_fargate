@@ -1,0 +1,2 @@
+[env]
+DATABASE_URL = 'maria://admin:password@nikki.cnklvh4mmaaf.ap-northeast-1.rds.amazonaws.com:3306'
