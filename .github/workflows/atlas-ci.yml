@@ -23,7 +23,7 @@ jobs:
           --health-start-period 10s
           --health-timeout 5s
           --health-retries 10
-    runs-on: ubuntu-latest
+    runs-on: codebuild-staging-db-migration-${{ github.run_id }}-${{ github.run_attempt }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
       DATABASE_URL: 'maria://root:root@mariadb:3306'
