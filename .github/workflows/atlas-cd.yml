@@ -26,3 +26,5 @@ jobs:
         run: atlas migrate status --env production
       - name: atlas apply dry-run
         run: atlas migrate apply --dry-run --env production
+      - name: atlas apply
+        run: atlas migrate apply --env production
