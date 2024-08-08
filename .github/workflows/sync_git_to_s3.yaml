@@ -25,10 +25,10 @@ jobs:
           aws-region: ap-northeast-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - run: git branch
-      - run: cat ${GITHUB_EVENT_PATH}
-      - run: git log --oneline -n3
-      - run: git diff 'HEAD~' --name-only
+      - name: show updated file
+        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d
+      - name: show deleted file
+        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D
       - name: Sync to S3 (except deleted file)
         run: |
           for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d); do
