@@ -29,8 +29,13 @@ jobs:
       - run: cat ${GITHUB_EVENT_PATH}
       - run: git log --oneline -n3
       - run: git diff 'HEAD~' --name-only
-      - name: Sync to S3
+      - name: Sync to S3 (except deleted file)
         run: |
-          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }}); do
+          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d); do
             aws s3 cp ${{ env.SYNC_DIR }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
+      - name: Sync to S3 (deleted file)
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D); do
+            aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
           done
