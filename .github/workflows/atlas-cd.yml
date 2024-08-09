@@ -2,7 +2,8 @@ name: Atlas CD (DB Migration)
 on:
   push:
     branches:
-      - main
+      # - main
+      - hoge
 permissions:
   contents: read # actions/chekout
   pull-requests: write # github-comment

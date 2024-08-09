@@ -1,0 +1,41 @@
+#  This workflow will run every time you push to the main branch. It will sync the contents of the repository to the S3 bucket.
+#  The  --delete  flag will delete any files in the S3 bucket that are not in the repository.
+#  You can also use the  --exclude  and  --include  flags to specify which files to include or exclude from the sync.
+
+name: sync git to s3
+
+on:
+  push:
+    # branches:
+    #   - main
+env:
+  SYNC_DIR: contents
+  SYNC_BUCKET: nysdin-diff-test
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: show updated file
+        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d
+      - name: show deleted file
+        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D
+      - name: Sync to S3 (except deleted file)
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d); do
+            aws s3 cp ${{ env.SYNC_DIR }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
+      - name: Sync to S3 (deleted file)
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D); do
+            aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
