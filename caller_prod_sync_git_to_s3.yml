@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   sync:
-    uses: ./.github/workflows/caller_prod_sync_git_to_s3.yml
+    uses: ./.github/workflows/sync_git_to_s3.yml
     with:
       public_asset_files_bucket: nysdin-asset-files
       private_asset_files_bucket: nysdin-private-asset-files
