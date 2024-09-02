@@ -2,12 +2,12 @@
 #  The  --delete  flag will delete any files in the S3 bucket that are not in the repository.
 #  You can also use the  --exclude  and  --include  flags to specify which files to include or exclude from the sync.
 
-name: sync git to s3
+name: copy git to s3
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - dummy
 env:
   SYNC_DIR: contents
   SYNC_BUCKET: nysdin-diff-test
