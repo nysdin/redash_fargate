@@ -1,4 +1,5 @@
-name: 【production】sync git to s3
+name: prod sync git to s3
+run-name: 【production】s3 sync
 
 on:
   workflow_dispatch:
