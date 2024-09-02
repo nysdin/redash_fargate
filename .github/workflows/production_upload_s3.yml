@@ -1,0 +1,86 @@
+name: production s3 upload
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dummy
+  # pull_request:
+  #   types:
+  #     - closed
+  #   branches:
+  #     - main
+
+jobs:
+   upload-public-assets:
+    runs-on: ubuntu-latest
+    env:
+      SYNC_DIR: contents
+      SYNC_BUCKET: nysdin-asset-files
+      SYNC_BUCKET_FOLDER: teamsite
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: show updated file
+        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d
+      - name: show deleted file
+        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D
+
+      - name: Upload Files
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d); do
+            aws s3 cp ${{ env.SYNC_DIR }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
+
+      - name: Delete Files
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D); do
+            aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
+   upload-private-assets:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sync_dir:
+          - setting/bbs_ranking
+          - setting/intern/setting
+          - setting/top
+    env:
+      SYNC_BUCKET: nysdin-private-asset-files
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: show updated file
+        run: git diff HEAD^ --name-only --relative=${{ matrix.sync_dir }} --diff-filter=d
+      - name: show deleted file
+        run: git diff HEAD^ --name-only --relative=${{ matrix.sync_dir }} --diff-filter=D
+
+      - name: Upload Files
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ matrix.sync_dir }} --diff-filter=d); do
+            aws s3 cp ${{ matrix.sync_dir }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ matrix.sync_dir }}/${file}
+          done
+
+      - name: Delete Files
+        run: |
+          for file in $(git diff HEAD^ --name-only --relative=${{ matrix.sync_dir }} --diff-filter=D); do
+            aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ matrix.sync_dir }}/${file}
+          done
