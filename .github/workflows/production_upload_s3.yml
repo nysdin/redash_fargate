@@ -24,9 +24,7 @@ jobs:
 
       - name: show updated file
         id: updated-files
-        run: |
-          files=$(git diff HEAD^ --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=d)
-          echo
+        run: git diff HEAD^ --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=d
       - name: show deleted file
         id: deleted-files
         run: git diff HEAD^ --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=D
