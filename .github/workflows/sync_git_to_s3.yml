@@ -26,6 +26,7 @@ jobs:
           aws-region: ap-northeast-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: ls -l
       - name: s3 sync
         run: aws s3 sync contents s3://${{ inputs.public_asset_files_bucket }}/teamsite --delete
   sync-private-assets:
@@ -45,5 +46,6 @@ jobs:
           aws-region: ap-northeast-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: ls -l
       - name: s3 sync
         run: aws s3 sync ${{ matrix.sync_dir }} s3://${{ inputs.private_asset_files_bucket }}/${{ matrix.sync_dir }} --delete
