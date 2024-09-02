@@ -1,0 +1,46 @@
+name: sync git to s3
+
+on:
+  workflow_call:
+    inputs:
+      public_asset_files_bucket:
+        type: string
+        description: 'public bucket'
+        required: true
+      private_asset_files_bucket:
+        type: string
+        description: 'private bucket'
+        required: true
+jobs:
+  sync-public-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: s3 sync
+        run: aws s3 sync contents s3://${{ inputs.public_asset_files_bucket }}/teamsite --delete
+  sync-private-assets:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sync_dir:
+          - setting/bbs_ranking
+          - setting/intern/setting
+          - setting/top
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: s3 sync
+        run: aws s3 sync ${{ matrix.sync_dir }} s3://${{ inputs.private_asset_files_bucket }}/${{ matrix.sync_dir }} --delete
