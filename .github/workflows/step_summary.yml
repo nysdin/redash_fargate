@@ -47,4 +47,5 @@ jobs:
           echo b
           echo c
       - run: |
+          echo ${{ steps.echo.outputs.stdout }}
           echo ${{ steps.echo.outputs.stdout }} >> $GITHUB_STEP_SUMMARY
