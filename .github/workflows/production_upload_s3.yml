@@ -1,15 +1,10 @@
 name: production s3 upload
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # TODO: commit sha を指定できるようにする
   push:
     branches:
       - main
-  # pull_request:
-  #   types:
-  #     - closed
-  #   branches:
-  #     - main
 
 jobs:
    upload-public-assets:
@@ -31,8 +26,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: show updated file
-        run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d
+        id: updated-files
+        run: |
+          files=$(git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d)
+          echo
       - name: show deleted file
+        id: deleted-files
         run: git diff HEAD^ --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D
 
       - name: Upload Files
