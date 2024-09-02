@@ -32,17 +32,17 @@ jobs:
       - name: show deleted file
         run: git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D
 
-      # - name: Upload Files
-      #   run: |
-      #     for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d); do
-      #       aws s3 cp ${{ env.SYNC_DIR }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
-      #     done
+      - name: Upload Files
+        run: |
+          for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=d); do
+            aws s3 cp ${{ env.SYNC_DIR }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
 
-      # - name: Delete Files
-      #   run: |
-      #     for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D); do
-      #       aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
-      #     done
+      - name: Delete Files
+        run: |
+          for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ env.SYNC_DIR }} --diff-filter=D); do
+            aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ env.SYNC_DIR }}/${file}
+          done
    upload-private-assets:
     runs-on: ubuntu-latest
     strategy:
@@ -59,6 +59,7 @@ jobs:
         with:
           fetch-depth: 3
       - run: git branch -a
+      - run: git log --oneline -10
       - run: git fetch origin ${{ env.BASE_BRANCH }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
@@ -72,14 +73,14 @@ jobs:
       - name: show deleted file
         run: git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=D
 
-      # - name: Upload Files
-      #   run: |
-      #     for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=d); do
-      #       aws s3 cp ${{ matrix.sync_dir }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ matrix.sync_dir }}/${file}
-      #     done
+      - name: Upload Files
+        run: |
+          for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=d); do
+            aws s3 cp ${{ matrix.sync_dir }}/${file} s3://${{ env.SYNC_BUCKET }}/${{ matrix.sync_dir }}/${file}
+          done
 
-      # - name: Delete Files
-      #   run: |
-      #     for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=D); do
-      #       aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ matrix.sync_dir }}/${file}
-      #     done
+      - name: Delete Files
+        run: |
+          for file in $(git diff origin/${{ env.BASE_BRANCH }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=D); do
+            aws s3 rm s3://${{ env.SYNC_BUCKET }}/${{ matrix.sync_dir }}/${file}
+          done
