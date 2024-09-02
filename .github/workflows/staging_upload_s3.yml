@@ -37,7 +37,6 @@ jobs:
         run: |
           echo "<details><summary>Upload Command Result</summary>" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           for file in $(git diff origin/${{ github.base_ref }} --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=d); do
             aws s3 cp ${{ vars.TEAMSITE_SYNC_DIR }}/${file} s3://${{ vars.PUBLIC_ASSET_BUCKET_NAME }}/${{ vars.TEAMSITE_SYNC_DIR }}/${file} >> $GITHUB_STEP_SUMMARY
           done
@@ -54,7 +53,6 @@ jobs:
         run: |
           echo "<details><summary>Delete Command Result</summary>" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           for file in $(git diff origin/${{ github.base_ref }} --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=D); do
             aws s3 rm s3://${{ vars.PRIVATE_ASSET_BUCKET_NAME }}/${{ vars.TEAMSITE_SYNC_DIR }}/${file}
           done
@@ -95,7 +93,6 @@ jobs:
         run: |
           echo "<details><summary>Upload Command Result</summary>" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           for file in $(git diff origin/${{ github.base_ref }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=d); do
             aws s3 cp ${{ matrix.sync_dir }}/${file} s3://${{ vars.PRIVATE_ASSET_BUCKET_NAME }}/${{ matrix.sync_dir }}/${file} >> $GITHUB_STEP_SUMMARY
           done
@@ -112,7 +109,6 @@ jobs:
         run: |
           echo "<details><summary>Delete Command Result</summary>" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           for file in $(git diff origin/${{ github.base_ref }} --name-only --relative=${{ matrix.sync_dir }} --diff-filter=D); do
             aws s3 rm s3://${{ vars.PRIVATE_ASSET_BUCKET_NAME }}/${{ matrix.sync_dir }}/${file} >> $GITHUB_STEP_SUMMARY
           done
