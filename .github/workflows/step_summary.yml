@@ -9,6 +9,11 @@ jobs:
    upload-public-assets:
     runs-on: ubuntu-latest
     environment: production
+    strategy:
+      matrix:
+        sync_dir:
+          - contents
+          - setting/bbs_ranking
     steps:
       - name: Checkout
         uses: actions/checkout@v4
