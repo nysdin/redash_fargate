@@ -31,7 +31,9 @@ jobs:
         run: |
           files=$(git diff HEAD^ --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=d)
           echo '### Uploaded Files 🚀' >> $GITHUB_STEP_SUMMARY
-          echo "${files}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          git log --oneline -n10 >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
       - name: show deleted file
         id: deleted-files
         run: |
