@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-   upload-public-assets:
+  upload-public-assets:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -58,7 +58,7 @@ jobs:
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
           echo "</details>" >> $GITHUB_STEP_SUMMARY
 
-   upload-private-assets:
+  upload-private-assets:
     runs-on: ubuntu-latest
     environment: production
     strategy:
