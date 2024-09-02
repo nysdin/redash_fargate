@@ -11,6 +11,9 @@ on:
         type: string
         description: 'private bucket'
         required: true
+    secrets:
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
 jobs:
   sync-public-assets:
     runs-on: ubuntu-latest
