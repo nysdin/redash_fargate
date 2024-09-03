@@ -1,7 +1,7 @@
-name: production s3 upload
+name: 【Production】S3 Upload
 
 on:
-  workflow_dispatch: # TODO: commit sha を指定できるようにする
+  workflow_dispatch:
     inputs:
       github-sha:
         required: false
@@ -12,30 +12,8 @@ on:
       - main
 
 jobs:
-  upload-assets:
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 3
-          ref: ${{  inputs.github-sha || github.sha }}
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
-        with:
-          aws-region: ap-northeast-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Upload & Delete Files( `${{ vars.PUBLIC_ASSET_BUCKET_NAME}}` )
-        run: ./script/s3_upload.sh
-        env:
-          BUCKET_NAME: "${{ vars.PUBLIC_ASSET_BUCKET_NAME}}"
-          SYNC_DIRS: "${{ vars.PUBLIC_ASSET_SYNC_DIRS }}"
-          DIFF_COMMIT: "${{ vars.DIFF_COMMIT }}"
-      - name: Upload & Delete Files( `${{ vars.PRIVATE_ASSET_BUCKET_NAME}}` )
-        run: ./script/s3_upload.sh
-        env:
-          BUCKET_NAME: "${{ vars.PRIVATE_ASSET_BUCKET_NAME}}"
-          SYNC_DIRS: "${{ vars.PRIVATE_ASSET_SYNC_DIRS}}"
-          DIFF_COMMIT: "${{ vars.DIFF_COMMIT }}"
+  upload:
+    uses: ./.github/workflows/upload_s3.yml
+    with:
+      environment: production
+      github-sha: ${{ inputs.github-sha || github.sha }}
