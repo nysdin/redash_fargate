@@ -13,8 +13,8 @@ for dir in ${SYNC_DIRS}; do
     echo "### Upload Command Result (\`${dir}\`) 🚀" >> "$GITHUB_STEP_SUMMARY"
     echo "\`\`\`" >> "$GITHUB_STEP_SUMMARY"
     for file in $(git diff "${DIFF_COMMIT}" --name-only --relative="${dir}" --diff-filter=d); do
-      if [[ ${dir} == "contents" ]]; then src_dir="teamsite"; else src_dir="${dir}"; fi
-      aws s3 cp "${src_dir}/${file}" "s3://${BUCKET_NAME}/${dir}/${file}"
+      if [[ ${dir} == "contents" ]]; then s3_dir="teamsite"; else s3_dir="${dir}"; fi
+      aws s3 cp "${dir}/${file}" "s3://${BUCKET_NAME}/${s3_dir}/${file}"
     done
     echo "\`\`\`"
   } >> "$GITHUB_STEP_SUMMARY"

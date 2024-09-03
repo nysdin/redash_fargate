@@ -1,1 +1,1 @@
-bbs2
+bbs2.txt
