@@ -9,6 +9,9 @@ on:
       environment:
         required: true
         type: string
+      base-branch:
+        required: false
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
       AWS_SECRET_ACCESS_KEY:
@@ -26,6 +29,8 @@ jobs:
         with:
           fetch-depth: 3
           ref: ${{  inputs.github-sha || github.sha }}
+      - if: inputs.environment == 'staging'
+        run: git fetch origin ${{ inputs.base-branch || 'main' }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:

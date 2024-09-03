@@ -7,6 +7,11 @@ on:
         required: false
         type: string
         description: 'commit sha'
+      base-branch:
+        required: false
+        type: string
+        default: main
+        description: 'base branch'
 
 jobs:
   upload:
