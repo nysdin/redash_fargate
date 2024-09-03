@@ -1,4 +1,5 @@
 name: s3 sync
+run-name: 【${{ inputs.environment }}】s3 sync with ${{ github.sha }}
 
 on:
   workflow_dispatch:
