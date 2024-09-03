@@ -7,7 +7,7 @@ on:
         type: string
         description: 'production|staging'
         required: true
-      dry-run:
+      dryrun:
         type: boolean
         default: false
         required: false
@@ -29,10 +29,10 @@ jobs:
         env:
           BUCKET_NAME: "${{ vars.PUBLIC_ASSET_BUCKET_NAME}}"
           SYNC_DIRS: "${{ vars.PUBLIC_ASSET_SYNC_DIRS }}"
-          DRYRUN: "${{ inputs.dry-run }}"
+          DRYRUN: "${{ inputs.dryrun }}"
       - name: S3 Sync `${{ vars.PRIVATE_ASSET_BUCKET_NAME}}`
         run: ./script/s3_sync.sh
         env:
           BUCKET_NAME: "${{ vars.PRIVATE_ASSET_BUCKET_NAME}}"
           SYNC_DIRS: "${{ vars.PRIVATE_ASSET_SYNC_DIRS}}"
-          DRYRUN: "${{ inputs.dry-runx }}"
+          DRYRUN: "${{ inputs.dryrunx }}"
