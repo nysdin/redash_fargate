@@ -27,12 +27,12 @@ jobs:
       - name: Upload & Delete Files( `${{ vars.PUBLIC_ASSET_BUCKET_NAME}}` )
         run: ./script/s3_upload.sh
         env:
-          SYNC_BUCKET: "${{ vars.PUBLIC_ASSET_BUCKET_NAME}}"
-          SYNC_DIR: "${{ vars.PUBLIC_ASSET_SYNC_DIRS }}"
+          BUCKET_NAME: "${{ vars.PUBLIC_ASSET_BUCKET_NAME}}"
+          SYNC_DIRS: "${{ vars.PUBLIC_ASSET_SYNC_DIRS }}"
           DIFF_COMMIT: "${{ vars.DIFF_COMMIT }}"
       - name: Upload & Delete Files( `${{ vars.PRIVATE_ASSET_BUCKET_NAME}}` )
         run: ./script/s3_upload.sh
         env:
-          SYNC_BUCKET: "${{ vars.PRIVATE_ASSET_BUCKET_NAME}}"
-          SYNC_DIR: "${{ vars.PRIVATE_ASSET_SYNC_DIRS}}"
+          BUCKET_NAME: "${{ vars.PRIVATE_ASSET_BUCKET_NAME}}"
+          SYNC_DIRS: "${{ vars.PRIVATE_ASSET_SYNC_DIRS}}"
           DIFF_COMMIT: "${{ vars.DIFF_COMMIT }}"
