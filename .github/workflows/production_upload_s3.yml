@@ -20,20 +20,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 3
+          ref: ${{  inputs.github-sha || github.sha }}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
         with:
           aws-region: ap-northeast-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Upload & Delete Files(`${{ vars.PUBLIC_ASSET_BUCKET_NAME}}`)
-        run: ./scripts/s3_upload.sh
+      - name: Upload & Delete Files( `${{ vars.PUBLIC_ASSET_BUCKET_NAME}}` )
+        run: ./script/s3_upload.sh
         env:
           SYNC_BUCKET: "${{ vars.PUBLIC_ASSET_BUCKET_NAME}}"
           SYNC_DIR: "${{ vars.PUBLIC_ASSET_SYNC_DIRS }}"
           DIFF_COMMIT: "${{ vars.DIFF_COMMIT }}"
-      - name: Upload & Delete Files(`${{ vars.PRIVATE_ASSET_BUCKET_NAME}}`)
-        run: ./scripts/s3_upload.sh
+      - name: Upload & Delete Files( `${{ vars.PRIVATE_ASSET_BUCKET_NAME}}` )
+        run: ./script/s3_upload.sh
         env:
           SYNC_BUCKET: "${{ vars.PRIVATE_ASSET_BUCKET_NAME}}"
           SYNC_DIR: "${{ vars.PRIVATE_ASSET_SYNC_DIRS}}"
