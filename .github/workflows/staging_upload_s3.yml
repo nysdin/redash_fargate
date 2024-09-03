@@ -10,7 +10,7 @@ on:
       base-branch:
         required: false
         type: string
-        default: master
+        default: main
         description: 'base branch'
 
 jobs:
