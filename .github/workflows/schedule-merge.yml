@@ -8,7 +8,7 @@ on:
       - synchronize
   schedule:
     # https://crontab.guru/every-hour
-    - cron: "0 * * * *"
+    - cron: "0/10 * * * *"
 
 jobs:
   merge_schedule:
@@ -22,3 +22,4 @@ jobs:
           automerge_fail_label: "merge-schedule-failed"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TZ: Asia/Tokyo
