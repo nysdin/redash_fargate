@@ -1,0 +1,1 @@
+bbs_ranking/hoge/bbs_hoge.txt

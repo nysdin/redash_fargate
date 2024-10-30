@@ -1,0 +1,51 @@
+name: step summary
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+   upload-public-assets:
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      matrix:
+        sync_dir:
+          - contents
+          - setting/bbs_ranking
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: show updated file
+        id: updated-files
+        run: |
+          files=$(git diff HEAD^ --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=d)
+          echo '### Uploaded Files 🚀' >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          git log --oneline -n10 >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+      - name: show deleted file
+        id: deleted-files
+        run: |
+          files=$(git diff HEAD^ --name-only --relative=${{ vars.TEAMSITE_SYNC_DIR }} --diff-filter=D)
+          echo '### Deleted Files 🔥' >> $GITHUB_STEP_SUMMARY
+          echo "${files}" >> $GITHUB_STEP_SUMMARY
+
+      - id: echo
+        run: |
+          echo a
+          echo b
+          echo c
+      - run: |
+          echo ${{ steps.echo.outputs.stdout }}
+          echo ${{ steps.echo.outputs.stdout }} >> $GITHUB_STEP_SUMMARY

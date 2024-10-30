@@ -1,0 +1,24 @@
+name: 【Staging】S3 Upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      github-sha:
+        required: false
+        type: string
+        description: 'commit sha'
+      base-branch:
+        required: false
+        type: string
+        default: main
+        description: 'base branch'
+
+jobs:
+  upload:
+    uses: ./.github/workflows/upload_s3.yml
+    with:
+      environment: staging
+      github-sha: ${{ inputs.github-sha || github.sha }}
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

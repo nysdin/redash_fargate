@@ -1,0 +1,41 @@
+name: s3 sync
+run-name: 【${{ inputs.environment }}】s3 sync with ${{ github.sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options:
+          - staging
+          - production
+        required: true
+      dryrun:
+        type: boolean
+        default: false
+        required: false
+jobs:
+  sync-public-assets:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4.0.2
+        with:
+          aws-region: ap-northeast-1
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: S3 Sync `${{ vars.PUBLIC_ASSET_BUCKET_NAME}}`
+        run: ./script/s3_sync.sh
+        env:
+          BUCKET_NAME: "${{ vars.PUBLIC_ASSET_BUCKET_NAME}}"
+          SYNC_DIRS: "${{ vars.PUBLIC_ASSET_SYNC_DIRS }}"
+          DRYRUN: "${{ inputs.dryrun }}"
+      - name: S3 Sync `${{ vars.PRIVATE_ASSET_BUCKET_NAME}}`
+        run: ./script/s3_sync.sh
+        env:
+          BUCKET_NAME: "${{ vars.PRIVATE_ASSET_BUCKET_NAME}}"
+          SYNC_DIRS: "${{ vars.PRIVATE_ASSET_SYNC_DIRS}}"
+          DRYRUN: "${{ inputs.dryrunx }}"
