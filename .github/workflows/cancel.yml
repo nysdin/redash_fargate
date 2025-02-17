@@ -2,10 +2,16 @@ name: Cancel test
 on:
   # push:
   workflow_dispatch:
+   inputs:
+    test:
+      description: "test"
+      required: false
 jobs:
   failure:
     runs-on: ubuntu-latest
     steps:
+      - if: ${{ inputs.test }}
+        run: echo "test"
       - run: sleep 60
       - name: failure
         if: ${{ !cancelled() && !failure() }}
