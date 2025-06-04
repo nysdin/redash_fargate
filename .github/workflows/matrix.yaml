@@ -1,4 +1,4 @@
-name: step summary
+name: matrix
 on:
   push:
 
@@ -7,6 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     strategy:
-      matrix: { os: [ubuntu-latest, macos-latest, windows-latest] }
+      matrix: [{ os: [ubuntu-latest, macos-latest, windows-latest] }]
     steps:
       - run: echo ${{ matrix.os}}
