@@ -1,0 +1,181 @@
+name: Terraform Plan/Apply Workflow
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform (Mock)
+        run: |
+          echo "🔧 Terraform セットアップ完了（疑似）"
+          echo "Terraform v1.8.0"
+
+      - name: Terraform Init (Mock)
+        run: |
+          echo "🚀 Terraform 初期化中..."
+          sleep 2
+          echo "✅ Terraform が正常に初期化されました"
+
+      - name: Terraform Plan (Mock)
+        id: plan
+        run: |
+          echo "📋 Terraform Plan を実行中..."
+          sleep 2
+
+          # ダミーの plan 結果を生成
+          cat << 'EOF' > plan_output.txt
+          Terraform used the selected providers to generate the following execution plan.
+          Resource actions are indicated with the following symbols:
+            + create
+            ~ update in-place
+            - destroy
+
+          Terraform will perform the following actions:
+
+            # aws_instance.web will be created
+            + resource "aws_instance" "web" {
+                + ami                          = "ami-0c55b159cbfafe1f0"
+                + instance_type                = "t3.micro"
+                + availability_zone            = "ap-northeast-1a"
+                + key_name                     = "my-key"
+                + vpc_security_group_ids       = [
+                    + "sg-12345678",
+                  ]
+                + tags                         = {
+                    + "Name"        = "web-server"
+                    + "Environment" = "production"
+                  }
+              }
+
+            # aws_s3_bucket.logs will be updated in-place
+            ~ resource "aws_s3_bucket" "logs" {
+                  id     = "my-logs-bucket"
+                ~ versioning {
+                    ~ enabled = false -> true
+                  }
+              }
+
+            # aws_security_group.old will be destroyed
+            - resource "aws_security_group" "old" {
+                - id          = "sg-87654321" -> null
+                - name        = "old-sg" -> null
+                - description = "Old security group" -> null
+              }
+
+          Plan: 1 to add, 1 to change, 1 to destroy.
+
+          Changes to Outputs:
+            + instance_ip = (known after apply)
+            ~ bucket_name = "old-bucket" -> "new-bucket"
+          EOF
+
+          cat plan_output.txt
+
+      - name: Create Plan Summary
+        run: |
+          echo "## 📊 Terraform Plan 結果" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 変更サマリー" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| アクション | リソース数 |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|-----------|" >> $GITHUB_STEP_SUMMARY
+          echo "| ➕ 作成 | 1 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔄 更新 | 1 |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ 削除 | 1 |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 詳細な変更内容" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### ➕ 作成されるリソース" >> $GITHUB_STEP_SUMMARY
+          echo "- \`aws_instance.web\` - EC2インスタンス (t3.micro)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### 🔄 更新されるリソース" >> $GITHUB_STEP_SUMMARY
+          echo "- \`aws_s3_bucket.logs\` - バージョニング有効化" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "#### ❌ 削除されるリソース" >> $GITHUB_STEP_SUMMARY
+          echo "- \`aws_security_group.old\` - 旧セキュリティグループ" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 出力の変更" >> $GITHUB_STEP_SUMMARY
+          echo "- \`instance_ip\`: 新規作成" >> $GITHUB_STEP_SUMMARY
+          echo "- \`bucket_name\`: old-bucket → new-bucket" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Plan 実行完了。Apply を実行するには承認が必要です。" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Plan Output
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: plan_output.txt
+          retention-days: 5
+
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    needs: terraform-plan
+    # GitHub Environments を使用して承認フローを設定
+    # 注意: 実際に使用するには、リポジトリ設定で "production" 環境を作成し、
+    # Protection rules で Required reviewers を設定する必要があります
+    environment:
+      name: terraform-production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download Plan Output
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+
+      - name: Review Plan
+        run: |
+          echo "📋 承認された Plan の内容を確認中..."
+          cat plan_output.txt
+
+      - name: Terraform Apply (Mock)
+        run: |
+          echo "🚀 Terraform Apply を実行中..."
+          sleep 3
+
+          echo ""
+          echo "✅ Apply 完了"
+          echo ""
+          echo "作成されたリソース:"
+          echo "  • aws_instance.web (i-0123456789abcdef0)"
+          echo "  • Instance IP: 54.123.45.67"
+          echo ""
+          echo "更新されたリソース:"
+          echo "  • aws_s3_bucket.logs (バージョニング: 有効)"
+          echo ""
+          echo "削除されたリソース:"
+          echo "  • aws_security_group.old"
+
+      - name: Create Apply Summary
+        run: |
+          echo "## 🎉 Terraform Apply 完了" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 適用された変更" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| リソース | アクション | 詳細 |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|-----------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| \`aws_instance.web\` | ➕ 作成 | t3.micro インスタンス |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`aws_s3_bucket.logs\` | 🔄 更新 | バージョニング有効化 |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`aws_security_group.old\` | ❌ 削除 | 旧セキュリティグループ |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 出力値" >> $GITHUB_STEP_SUMMARY
+          echo "- **Instance IP**: 54.123.45.67" >> $GITHUB_STEP_SUMMARY
+          echo "- **Bucket Name**: new-bucket" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ インフラストラクチャが正常にデプロイされました！" >> $GITHUB_STEP_SUMMARY
+
+      - name: Notify Success
+        run: |
+          echo "📢 成功通知を送信（疑似）"
+          echo "Slack/Email などへの通知処理"
